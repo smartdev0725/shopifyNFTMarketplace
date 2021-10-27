@@ -42,7 +42,7 @@ describe("NFT Contract", function () {
         const { deployerSigner, userSigner, user2Signer } = await getSigners();
         const { NFTContract, } = await getContracts();
         await NFTContract.connect(deployerSigner)
-            .safeMintBatch(
+            .safePremint(
                 ["test", "test"]
             );
 
