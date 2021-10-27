@@ -1,0 +1,17 @@
+{
+	"name": "validation-scripts",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.24.0",
+		"mime-types": "^2.1.33",
+		"validator": "^13.6.0",
+		"validatorjs": "^3.22.1"
+	}
+}
