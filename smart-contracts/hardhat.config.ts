@@ -30,9 +30,9 @@ module.exports = {
   },
   namedAccounts: {
     deployer: 0,
-    user: 1,
-    user2: 2,
-    user3: 3,
+    NFTOwner: 1,
+    user1: 2,
+    user2: 3,
   },
   solidity: {
     version: "0.8.4",

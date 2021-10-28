@@ -16,7 +16,7 @@ contract NFTFactory is Initializable, OwnableUpgradeable {
     function newCollection(string memory name, string memory symbol, address owner) external onlyOwner{
         GenericNFT collection = new GenericNFT(name, symbol);
         collection.transferOwnership(owner);
-        collectionAddressFromId[collectionCount];
+        collectionAddressFromId[collectionCount] = collection;
         collectionCount++;
     }
 }

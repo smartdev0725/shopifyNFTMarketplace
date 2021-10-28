@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 
-const contractName = "GenericNFT";
+const contractName = "NFTFactory";
 
 const func: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
@@ -23,7 +23,7 @@ const func: DeployFunction = async (
         execute: {
           init: {
             methodName: "initialize",
-            args: ["Generic token", "GEN"],
+            args: [],
           }
         }
       },
