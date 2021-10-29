@@ -4,17 +4,17 @@ export const getSigners = async () => {
   const signers = await ethers.getSigners();
   return {
     deployerSigner: signers[0],
-    userSigner: signers[1],
-    user2Signer: signers[2],
-    user3Signer: signers[3],
+    NFTOwnerSigner: signers[1],
+    user1Signer: signers[2],
+    user2Signer: signers[3],
   };
 };
 
 export const getContracts = async () => {
-  const NFTContract = await ethers.getContract("GenericNFT");
+  const factoryContract = await ethers.getContract("NFTFactory");
 
   return {
-    NFTContract,
+    factoryContract,
   };
 };
 
