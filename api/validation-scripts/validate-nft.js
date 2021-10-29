@@ -30,7 +30,6 @@ const validateImage = async (imageHash) => {
 
 // Validate is the correct type of file. Need to send the expected files
 const validateFile = async (fileHash) => {
-  // File type should be an array with the valid types
   const url = `https://cloudflare-ipfs.com/ipfs/${fileHash}`;
   let isValid = false;
   let errorMessage = '';
@@ -51,6 +50,7 @@ const validateFile = async (fileHash) => {
 };
 
 // ----------------------------------Creating validators
+// This validator is for confirm an ipfs hash is a image
 Validator.registerAsync('imageIPFS', async function (image, attribute, req, passes) {
   const { isValid, errorMessage } = await validateImage(image);
   if (isValid) {
@@ -61,6 +61,7 @@ Validator.registerAsync('imageIPFS', async function (image, attribute, req, pass
   return isValid;
 });
 
+// This validator is for confirm an ipfs hash is a valid file
 Validator.registerAsync('fileIPFS', async function (file, attribute, req, passes) {
   const { isValid, errorMessage } = await validateFile(file);
   if (isValid) {
@@ -71,10 +72,12 @@ Validator.registerAsync('fileIPFS', async function (file, attribute, req, passes
   return isValid;
 });
 
+// This validator is for confirm a string is a mimetype
 Validator.register('mimetype', function (value) {
   return stringValidator.default.isMimeType(value);
 }, 'The :attribute is not mimetype');
 
+// This validator is for confirm a string is a eth address
 Validator.register('ethereumAddress', function (value) {
   return stringValidator.default.isEthereumAddress(value);
 }, 'The :attribute is not an ethereum address');

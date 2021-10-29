@@ -3,6 +3,7 @@ const stringValidator = require('validator');
 
 
 // ----------------------------------Creating validators
+// This validator is for confirm a string is a eth address
 Validator.register('ethereumAddress', function (value) {
   return stringValidator.default.isEthereumAddress(value);
 }, 'The :attribute is not an ethereum address');
