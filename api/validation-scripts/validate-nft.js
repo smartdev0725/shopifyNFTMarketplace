@@ -11,52 +11,62 @@ const validImageFormat = [
 
 // Validate an image
 const validateImage = async (imageHash) => {
-  const url = `https://gateway.pinata.cloud/ipfs/${imageHash}`;
+  const url = `https://cloudflare-ipfs.com/ipfs/${imageHash}`;
   let isValid = false;
+  let errorMessage = '';
   try {
-    const image = await axios.get(url, { timeout: 30000 });
+    const image = await axios.get(url, { timeout: 60000 });
     if (validImageFormat.find((format) => image.headers['content-type'] === format)) {
       isValid = true;
     }
   } catch (error) {
+    if (error) {
+      errorMessage = `error ${error.response.status} ${error.response.statusText}`;
+    }
   }
-  return isValid;
+  return { isValid, errorMessage };
 
 };
 
 // Validate is the correct type of file. Need to send the expected files
-const validateFile = async (fileHash, fileType) => {
+const validateFile = async (fileHash) => {
   // File type should be an array with the valid types
-  const url = `https://gateway.pinata.cloud/ipfs/${fileHash}`;
+  const url = `https://cloudflare-ipfs.com/ipfs/${fileHash}`;
   let isValid = false;
+  let errorMessage = '';
   try {
-    const file = await axios.get(url, { timeout: 5000 });
-    if (fileType.find((format) => file.headers['content-type'] === format)) {
+    const file = await axios.get(url, { timeout: 60000 });
+    if (stringValidator.default.isMimeType(file.headers['content-type'])) {
       isValid = true;
+    } else {
+      errorMessage = 'Is not a valid file';
     }
   } catch (error) {
+    if (error) {
+      errorMessage = `error ${error.response.status} ${error.response.statusText}`;
+    }
   }
-  return isValid;
+  return { isValid, errorMessage };
 
 };
 
 // ----------------------------------Creating validators
 Validator.registerAsync('imageIPFS', async function (image, attribute, req, passes) {
-  const isValid = await validateImage(image);
+  const { isValid, errorMessage } = await validateImage(image);
   if (isValid) {
     await passes(true);
   } else {
-    await passes(false, 'Is not a valid file');
+    await passes(false, errorMessage ? errorMessage : 'Is not a valid file');
   }
   return isValid;
 });
 
-Validator.registerAsync('videoIPFS', async function (image, attribute, req, passes) {
-  const isValid = await validateImage(image);
+Validator.registerAsync('fileIPFS', async function (file, attribute, req, passes) {
+  const { isValid, errorMessage } = await validateFile(file);
   if (isValid) {
     await passes(true);
   } else {
-    await passes(false, 'Is not a valid file');
+    await passes(false, errorMessage ? errorMessage : 'Is not a valid file');
   }
   return isValid;
 });
@@ -76,11 +86,9 @@ const rules = {
   image: 'required|imageIPFS',
   properties: {
     "category": 'required|mimetype',
-    // Todo files[0] have to exist
-    "files.*.type": 'mimetype',
-    "files.*.uri": 'validateFile', //Todo that the file type is the same that type
-    "creators.*.name": 'string',
-    "creators.*.address": 'ethereumAddress',
+    "files.*.uri": 'fileIPFS|string',
+    "creators.*.name": 'required_with:properties.creators.*.address|string',
+    "creators.*.address": 'required_with:properties.creators.*.name|ethereumAddress',
     "createdAt": "required|date",
   },
 
@@ -93,28 +101,28 @@ const validateNFTData = async (data) => {
   await validation.checkAsync(() => {
     console.log('Is valid');
   }, () => {
-    console.log(validation.errors.all());
+    const errorText = validation.errors.all();
+    console.log(errorText);
   });
+
 };
 
 // Call to the function
 validateNFTData({
   "name": "Test file",
   "description": "A descripcion of the nft ",
-  "image": "QmQq6ZMQUrxZ5c1VSZpUzkwCsjEekLDfZeQnHciTe3nU3Q/1.png",
+  "image": "QmbYLJGCFfEVUdarkk7ud8Y7XcpG4FyhR6KDNNhYqtKT7Z",
   "properties": {
     "category": 'text/html',
     "createdAt": "2010",
-    "files": [
-      {
-        type: 'text/html',
-      }
-    ],
+    "files": [{
+      uri: 'QmbYLJGCFfEVUdarkk7ud8Y7XcpG4FyhR6KDNNhYqtKT7Z'
+    }],
     "creators": [
       {
         name: 'Isabella',
         address: '0xBA12222222228d8Ba445958a75a0704d566BF2C8'
-      }
+      },
     ]
   }
 });

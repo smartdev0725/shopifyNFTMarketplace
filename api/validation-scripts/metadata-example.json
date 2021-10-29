@@ -24,6 +24,7 @@
 	"collection": {
 		"name": "The collection name",
 		"description": "The collection description",
+		"mainArtist": "The name of the main artist",
 		"totalSupply": "The max amount of nft of the collection",
 		"contract": "Smart contract address",
 		"creators": [
