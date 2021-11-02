@@ -1,0 +1,38 @@
+{
+	"name": "The name of the nft",
+	"description": "A descripcion of the nft ",
+	"image": "ipfs:// The hash of the image",
+	"properties": {
+		"category": "The type oof the principal file of the nft",
+		"files": [
+			"An array with all the files availables in the nft, each of this elements should have this form:",
+			{
+				"uri": "ipfs:// The hash of the file",
+				"type": "MIME standart of the file"
+			}
+		],
+		"creators": [
+			"An array with all the creators of the nft, each of this elements should have this form:",
+			{
+				"name": "The name of creator",
+				"address": "Address of the creator"
+			}
+		],
+		"createdAt": "The date when the nft was created (in miliseconds?)",
+		"tokenId": "Id of the token in the nft contract"
+	},
+	"collection": {
+		"name": "The collection name",
+		"description": "The collection description",
+		"mainArtist": "The name of the main artist",
+		"totalSupply": "The max amount of nft of the collection",
+		"contract": "Smart contract address",
+		"creators": [
+			"An array with the creators of the collection, each of this elements should have this form:",
+			{
+				"name": "The name of creator",
+				"address": "Address of the creator"
+			}
+		]
+	}
+}
