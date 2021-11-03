@@ -17,13 +17,15 @@ model User {
   email     String  @unique
   password  String 
   userRole  UserRole[] //Relationship UserRole
+  userDraft UserDraft[] //Relationship UserDraft
+  userCollection UserCollection[] //Relationship UserCollection
 }
 
 model UserRole {
   id        Int     @id @default(autoincrement())
   user      User    @relation(fields: [userId], references:[id]) //Relationship User
   userId    Int
-  role      Role    @relation(fields: [roleId], references:[id])
+  role      Role    @relation(fields: [roleId], references:[id]) //Relationship Role
   roleId    Int
 
 }
@@ -36,20 +38,45 @@ model Role {
 
 model UserDraft {
   id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references:[id]) //Relationship User
+  userId    Int 
+  draft     Draft   @relation(fields: [draftId], references:[id]) //Relationship Draft
+  draftId   Int 
 }
 
 model Draft {
   id        Int     @id @default(autoincrement())
+  name      String
+  description String?
+  portraitUrl String?
+  totalSupply Int
+  hash        String
+  userId    String 
+  userDraft UserDraft[] //Relationship UserDraft
+  draftItem DraftItem[] //Relationship DraftItem
+  //status enum
 }
 
 model DraftItem {
   id        Int     @id @default(autoincrement())
+  name      String 
+  description String
+  url       String
+  draft     Draft   @relation(fields: [draftId], references:[id]) //Relationship Draft
+  draftId   Int
 }
 
 model UserCollection {
   id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references:[id]) //Relationship User
+  userId    Int 
+  collection  Collection   @relation(fields: [collectionId], references:[id]) //Relationship Collection
+  collectionId   Int 
 }
 
 model Collection {
   id        Int     @id @default(autoincrement())
+  url String
+  items Json
+  userCollection UserCollection[] //Relationship UserCollection
 }
