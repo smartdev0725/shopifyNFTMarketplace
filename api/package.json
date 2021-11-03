@@ -1,0 +1,27 @@
+{
+  "name": "cub3-shopify-app-api",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "run-p dev:*",
+    "dev:serve": "nodemon -e js -w dist dist/index.js",
+    "dev:build-watch": "tsc -w -p .",
+    "format:prettier": "prettier --write \"src/**/*.ts\"",
+    "format:lint": "eslint --fix \"src/**/*.ts\"",
+    "prisma:migrate": "prisma migrate dev --name init"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^20.2.1",
+    "@prisma/client": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/hapi__hapi": "^20.0.9",
+    "@types/node": "^16.11.6",
+    "nodemon": "^2.0.14",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.4.1",
+    "prisma": "^3.4.0",
+    "typescript": "^4.4.4"
+  }
+}
