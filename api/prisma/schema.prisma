@@ -54,7 +54,13 @@ model Draft {
   userId    String 
   userDraft UserDraft[] //Relationship UserDraft
   draftItem DraftItem[] //Relationship DraftItem
-  //status enum
+  status    Status     @default(draft) //status enum
+}
+
+enum Status{
+  draft
+  inProccess
+  approved
 }
 
 model DraftItem {
