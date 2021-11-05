@@ -32,7 +32,7 @@ model UserRole {
 
 model Role {
   id        Int     @id @default(autoincrement())
-  name      String
+  name      String  @unique
   userRole  UserRole[] //Relationship UserRole
 }
 
@@ -50,24 +50,26 @@ model Draft {
   description String?
   portraitUrl String?
   totalSupply Int
-  hash        String
+  status    Status     @default(draft) //status enum
+  contract  String
+  hash      String? @unique
   userId    String 
   userDraft UserDraft[] //Relationship UserDraft
   draftItem DraftItem[] //Relationship DraftItem
-  status    Status     @default(draft) //status enum
 }
 
 enum Status{
   draft
-  inProccess
+  inProcess
   approved
+  rejected
 }
 
 model DraftItem {
   id        Int     @id @default(autoincrement())
   name      String 
   description String
-  url       String
+  image     String 
   draft     Draft   @relation(fields: [draftId], references:[id]) //Relationship Draft
   draftId   Int
 }
@@ -82,7 +84,7 @@ model UserCollection {
 
 model Collection {
   id        Int     @id @default(autoincrement())
-  url String
-  items Json
+  url       String  @unique
+  items     Json
   userCollection UserCollection[] //Relationship UserCollection
 }
