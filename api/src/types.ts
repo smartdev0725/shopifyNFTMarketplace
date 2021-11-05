@@ -1,5 +1,8 @@
-export type RegisterPluginType = {
+import { Server } from "@hapi/hapi";
+
+export type RegisterPlugin = {
   version?: string;
   name: string;
-  register: () => void | Promise<void>;
+  dependencies?: string[];
+  register: (server: Server) => Promise<void>;
 };

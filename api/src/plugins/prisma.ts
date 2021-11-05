@@ -10,19 +10,19 @@ declare module "@hapi/hapi" {
 }
 
 const prisma = {
-    name: "prisma",
-    register: async function (server: Server): Promise<void> {
-        const prisma: PrismaClient = new PrismaClient();
+  name: "prisma",
+  register: async function (server: Server): Promise<void> {
+    const prisma: PrismaClient = new PrismaClient();
 
-        server.app.prisma = prisma;
+    server.app.prisma = prisma;
 
-        server.ext({
-            type: "onPostStop",
-            method: async (server) => {
-                server.app.prisma.$disconnect();
-            },
-        });
-    },
+    server.ext({
+      type: "onPostStop",
+      method: async (server) => {
+        server.app.prisma.$disconnect();
+      },
+    });
+  },
 };
 
-module.exports = prisma;
+export default prisma;
