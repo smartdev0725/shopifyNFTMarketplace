@@ -12,53 +12,45 @@ datasource db {
 
 //DB Model
 model User {
-  id        Int     @id @default(autoincrement())
-  username  String  @unique
-  email     String  @unique
-  password  String 
-  userRole  UserRole[] //Relationship UserRole
-  userDraft UserDraft[] //Relationship UserDraft
+  id             Int              @id @default(autoincrement())
+  username       String           @unique
+  email          String           @unique
+  password       String
+  role           Role             @relation(fields: [roleId], references: [id]) //Relationship Role
+  roleId         Int
+  userDraft      UserDraft[] //Relationship UserDraft
   userCollection UserCollection[] //Relationship UserCollection
 }
 
-model UserRole {
-  id        Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references:[id]) //Relationship User
-  userId    Int
-  role      Role    @relation(fields: [roleId], references:[id]) //Relationship Role
-  roleId    Int
-
-}
-
 model Role {
-  id        Int     @id @default(autoincrement())
-  name      String  @unique
-  userRole  UserRole[] //Relationship UserRole
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  user User[] //Relationship UserRole
 }
 
 model UserDraft {
-  id        Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references:[id]) //Relationship User
-  userId    Int 
-  draft     Draft   @relation(fields: [draftId], references:[id]) //Relationship Draft
-  draftId   Int 
+  id      Int   @id @default(autoincrement())
+  user    User  @relation(fields: [userId], references: [id]) //Relationship User
+  userId  Int
+  draft   Draft @relation(fields: [draftId], references: [id]) //Relationship Draft
+  draftId Int
 }
 
 model Draft {
-  id        Int     @id @default(autoincrement())
-  name      String
+  id          Int         @id @default(autoincrement())
+  name        String
   description String?
   portraitUrl String?
   totalSupply Int
-  status    Status     @default(draft) //status enum
-  contract  String
-  hash      String? @unique
-  userId    String 
-  userDraft UserDraft[] //Relationship UserDraft
-  draftItem DraftItem[] //Relationship DraftItem
+  status      Status      @default(draft) //status enum
+  contract    String
+  hash        String?     @unique
+  userId      String
+  userDraft   UserDraft[] //Relationship UserDraft
+  draftItem   DraftItem[] //Relationship DraftItem
 }
 
-enum Status{
+enum Status {
   draft
   inProcess
   approved
@@ -66,25 +58,25 @@ enum Status{
 }
 
 model DraftItem {
-  id        Int     @id @default(autoincrement())
-  name      String 
+  id          Int    @id @default(autoincrement())
+  name        String
   description String
-  image     String 
-  draft     Draft   @relation(fields: [draftId], references:[id]) //Relationship Draft
-  draftId   Int
+  image       String
+  draft       Draft  @relation(fields: [draftId], references: [id]) //Relationship Draft
+  draftId     Int
 }
 
 model UserCollection {
-  id        Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references:[id]) //Relationship User
-  userId    Int 
-  collection  Collection   @relation(fields: [collectionId], references:[id]) //Relationship Collection
-  collectionId   Int 
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id]) //Relationship User
+  userId       Int
+  collection   Collection @relation(fields: [collectionId], references: [id]) //Relationship Collection
+  collectionId Int
 }
 
 model Collection {
-  id        Int     @id @default(autoincrement())
-  url       String  @unique
-  items     Json
+  id             Int              @id @default(autoincrement())
+  url            String           @unique
+  items          Json
   userCollection UserCollection[] //Relationship UserCollection
 }
