@@ -9,3 +9,59 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+//DB Model
+model User {
+  id             Int              @id @default(autoincrement())
+  username       String           @unique
+  email          String           @unique
+  password       String
+  role           Role             @relation(fields: [roleId], references: [id]) //Relationship Role
+  roleId         Int
+  userCollection UserCollection[] //Relationship UserCollection
+}
+
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  user User[] //Relationship UserRole
+}
+
+enum Status {
+  draft
+  processing
+  approved
+  rejected
+  published
+}
+
+model UserCollection {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id]) //Relationship User
+  userId       Int
+  collection   Collection @relation(fields: [collectionId], references: [id]) //Relationship Collection
+  collectionId Int
+}
+
+model Collection {
+  id             Int              @id @default(autoincrement())
+  name           String
+  description    String?
+  portraitUrl    String?
+  totalSupply    Int
+  status         Status
+  contract       String           @unique
+  hash           String?          @unique
+  url            String?
+  userCollection UserCollection[] //Relationship UserCollection
+  collectionItem CollectionItem[] //Relationship CollectionItem
+}
+
+model CollectionItem {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String
+  image        String
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId Int
+}
