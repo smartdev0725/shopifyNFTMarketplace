@@ -18,7 +18,6 @@ model User {
   password       String
   role           Role             @relation(fields: [roleId], references: [id]) //Relationship Role
   roleId         Int
-  userDraft      UserDraft[] //Relationship UserDraft
   userCollection UserCollection[] //Relationship UserCollection
 }
 
@@ -28,42 +27,12 @@ model Role {
   user User[] //Relationship UserRole
 }
 
-model UserDraft {
-  id      Int   @id @default(autoincrement())
-  user    User  @relation(fields: [userId], references: [id]) //Relationship User
-  userId  Int
-  draft   Draft @relation(fields: [draftId], references: [id]) //Relationship Draft
-  draftId Int
-}
-
-model Draft {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String?
-  portraitUrl String?
-  totalSupply Int
-  status      Status      @default(draft) //status enum
-  contract    String
-  hash        String?     @unique
-  userId      String
-  userDraft   UserDraft[] //Relationship UserDraft
-  draftItem   DraftItem[] //Relationship DraftItem
-}
-
 enum Status {
   draft
-  inProcess
+  processing
   approved
   rejected
-}
-
-model DraftItem {
-  id          Int    @id @default(autoincrement())
-  name        String
-  description String
-  image       String
-  draft       Draft  @relation(fields: [draftId], references: [id]) //Relationship Draft
-  draftId     Int
+  published
 }
 
 model UserCollection {
@@ -76,7 +45,23 @@ model UserCollection {
 
 model Collection {
   id             Int              @id @default(autoincrement())
-  url            String           @unique
-  items          Json
+  name           String
+  description    String?
+  portraitUrl    String?
+  totalSupply    Int
+  status         Status
+  contract       String           @unique
+  hash           String?          @unique
+  url            String?
   userCollection UserCollection[] //Relationship UserCollection
+  collectionItem CollectionItem[] //Relationship CollectionItem
+}
+
+model CollectionItem {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String
+  image        String
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId Int
 }
